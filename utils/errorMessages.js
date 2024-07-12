@@ -35,7 +35,13 @@ const errors = {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
         code: "INTERNAL_SERVER_ERROR",
         message: "Internal Server Error"
-    }
+    },
+    USER_NOT_FOUND: {
+        status: StatusCodes.NOT_FOUND,
+        code: " USER_NOT_FOUND",
+        message: "User not found!"
+    },
+    
 };
 
 module.exports = errors;
