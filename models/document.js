@@ -8,18 +8,22 @@ const documentSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true
-  }},
-//   userIds: {
-//     type: [mongoose.Schema.Types.ObjectId],
-//     ref: 'User',
-//     default: []
-//   },
+  },
+  userIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'User',
+    default: []
+  }
+},
+
 //   updatedAt: {
 //     type: Date,
 //     default: Date.now
 //   }},
-  {
-    timestamps: true,
-  },
+  // userId {
+  //   type: [mongoose.Schema.Types.ObjectId],
+  //       ref: 'User',
+  //       default: []
+  // },
 );
 module.exports = mongoose.model('Document', documentSchema);

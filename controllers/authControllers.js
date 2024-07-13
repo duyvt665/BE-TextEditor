@@ -1,5 +1,5 @@
 require("dotenv").config();
-const {authService, getAllUserService, addUserService, deleteUserServiceByUsername,updateUserService} = require("../services/authService");
+const authService = require("../services/authService");
 const {sendErrorResponse, sendSuccessResponse} = require("../utils/apiRespondUtil");
 
 
@@ -22,20 +22,20 @@ const signUp = async (req, res) => {
 };
 
 //SIGN IN
-const signIn = async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const { token, user } = await authService.signInService({
-      username,
-      password,
-    });
-    return sendSuccessResponse(res, { message: "Login successful", token, user });
-  } catch (error) {
-    console.log(error);
-    const errorCode = error.code || "INTERNAL_SERVER_ERROR";
-    return sendErrorResponse(res, errorCode);
-  }
-};
+// const signIn = async (req, res) => {
+//   const { username, password } = req.body;
+//   try {
+//     const { token, user } = await authService.signInService({
+//       username,
+//       password,
+//     });
+//     return sendSuccessResponse(res, { message: "Login successful", token, user });
+//   } catch (error) {
+//     console.log(error);
+//     const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+//     return sendErrorResponse(res, errorCode);
+//   }
+// };
 
 const getAllUsers = async (req, res) => {
   try {
@@ -49,37 +49,37 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const addUserController = async (req, res) => {
-  try {
-    const { username, password, email } = req.body;
-    console.log(`Request to add user with username: ${username}`);
-    const newUser = await addUserService({ username, password, email });
-    return res.status(201).json({
-      message: "User added successfully",
-      user: newUser
-    });
-  } catch (error) {
-    console.error("Error in addUserController:", error);
-    if (error.code === "USER_CREATION_FAILED") {
-      return res.status(500).json({ 
-        status: "error",
-        statusCode: 500,
-        error: {
-          code: "USER_CREATION_FAILED",
-          message: "Failed to create user"
-        }
-      });
-    }
-    return res.status(500).json({ 
-      status: "error",
-      statusCode: 500,
-      error: {
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Internal Server Error"
-      }
-    });
-  }
-};
+// const addUserController = async (req, res) => {
+//   try {
+//     const { username, password, email } = req.body;
+//     console.log(`Request to add user with username: ${username}`);
+//     const newUser = await addUserService({ username, password, email });
+//     return res.status(201).json({
+//       message: "User added successfully",
+//       user: newUser
+//     });
+//   } catch (error) {
+//     console.error("Error in addUserController:", error);
+//     if (error.code === "USER_CREATION_FAILED") {
+//       return res.status(500).json({ 
+//         status: "error",
+//         statusCode: 500,
+//         error: {
+//           code: "USER_CREATION_FAILED",
+//           message: "Failed to create user"
+//         }
+//       });
+//     }
+//     return res.status(500).json({ 
+//       status: "error",
+//       statusCode: 500,
+//       error: {
+//         code: "INTERNAL_SERVER_ERROR",
+//         message: "Internal Server Error"
+//       }
+//     });
+//   }
+// };
 const deleteUserControllerByUsername = async (req, res) => {
   try {
     const { username } = req.params;
@@ -186,10 +186,10 @@ const updateUserWebsite = async (req, res) =>  {
 };
 
 module.exports = {
-  signUp,
-  signIn,
-  getAllUsers,
-  addUserController,
-  deleteUserControllerByUsername,
-  updateUserWebsite
+  // signUp,
+  // signIn,
+  // getAllUsers,
+  // addUserController,
+  // deleteUserControllerByUsername,
+  // updateUserWebsite
 };
