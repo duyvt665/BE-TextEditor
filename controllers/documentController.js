@@ -37,20 +37,7 @@ const addDocumentController = async (req, res) => {
     }
 };
 
-// const signIn = async (req, res) => {
-//     const { username, password } = req.body;
-//     try {
-//       const { token, user } = await authService.signInService({
-//         username,
-//         password,
-//       });
-//       return sendSuccessResponse(res, { message: "Login successful", token, user });
-//     } catch (error) {
-//       console.log(error);
-//       const errorCode = error.code || "INTERNAL_SERVER_ERROR";
-//       return sendErrorResponse(res, errorCode);
-//     }
-//   };
+
 const signIn = async (req, res) => {
       const { username, password } = req.body;
       try {
@@ -65,23 +52,7 @@ const signIn = async (req, res) => {
         return sendErrorResponse(res, errorCode);
       }
     };
-// const updateDocument = async (req, res) => {
-//     const document = await documentService.updateDocument(req.params.id, req.body);
-//     if (document) {
-//         res.json(document);
-//     } else {
-//         res.status(404).json({ message: 'Document not found' });
-//     }
-// };
 
-// const deleteDocumentController = async (req, res) => {
-//     const result = await documentService.deleteDocument(req.params.id);
-//     if (result) {
-//         res.status(204).end();
-//     } else {
-//         res.status(404).json({ message: 'Document not found' });
-//     }
-// };
 const deleteUserControllerByUsername = async (req, res) => {
     try {
       const { username } = req.params;

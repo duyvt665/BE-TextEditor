@@ -16,14 +16,6 @@ const documentSchema = new mongoose.Schema({
   }
 },
 
-//   updatedAt: {
-//     type: Date,
-//     default: Date.now
-//   }},
-  // userId {
-  //   type: [mongoose.Schema.Types.ObjectId],
-  //       ref: 'User',
-  //       default: []
-  // },
+
 );
 module.exports = mongoose.model('Document', documentSchema);
