@@ -11,7 +11,7 @@ const createDocumentService = async (title, content, userId) => {
       const user = await User.findById(userId);
       if (!user) {
         const customError = new Error('Invalid user ID');
-        customError.code = 'INVALID_USER_ID';
+        customError.code = 'INVALID_USERID';
         throw customError;
       }
   

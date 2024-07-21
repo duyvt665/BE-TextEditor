@@ -6,6 +6,7 @@ const errors = {
         code: "RESOURCE_NOT_FOUND",
         message: "The requested resource was not found."
     },
+    
     EMAIL_NOT_FOUND: {
         status: StatusCodes.NOT_FOUND,
         code: "EMAIL_NOT_FOUND",
@@ -31,11 +32,21 @@ const errors = {
         code: "PASSWORD_MISMATCH",
         message: "New password and confirm password do not match."
     },
+    INVALID_USERID: {
+        status: StatusCodes.BAD_REQUEST,
+        code: "INVALID_USERID",
+        message: "Invalid user ID provided. Please check and try again."
+    },
     INTERNAL_SERVER_ERROR: {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
         code: "INTERNAL_SERVER_ERROR",
         message: "Internal Server Error"
-    }
+    },  DOCUMENT_CREATION_FAILED: {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        code: "DOCUMENT_CREATION_FAILED",
+        message: "Document creation failed. Please try again later or contact support if the issue persists."
+    },
+     
 };
 
 module.exports = errors;
