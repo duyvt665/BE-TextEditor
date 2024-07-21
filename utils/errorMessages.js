@@ -37,15 +37,16 @@ const errors = {
         code: "INVALID_USERID",
         message: "Invalid user ID provided. Please check and try again."
     },
+    DOCUMENT_CREATION_FAILED: {
+        status: StatusCodes.BAD_REQUEST,
+        code: "DOCUMENT_CREATION_FAILED",
+        message: "Document creation failed. Please try again later or contact support if the issue persists."
+    },
     INTERNAL_SERVER_ERROR: {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
         code: "INTERNAL_SERVER_ERROR",
         message: "Internal Server Error"
-    },  DOCUMENT_CREATION_FAILED: {
-        status: StatusCodes.INTERNAL_SERVER_ERROR,
-        code: "DOCUMENT_CREATION_FAILED",
-        message: "Document creation failed. Please try again later or contact support if the issue persists."
-    },
+    },  
      
 };
 
