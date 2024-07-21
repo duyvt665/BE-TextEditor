@@ -68,31 +68,10 @@ const signInService = async ({ username, password }) => {
 
   return { token, user };
 };
-const getAllDocumentsService = async () => {
-  const listDocuments = await Document.find();
-  if (!listDocuments) {
-      const error = new Error();
-      error.code = "DOCUMENT_NOT_FOUND";
-      throw error;
-  }
-  return listDocuments;
-};
-const createDocumentService = async (title,content) => {
-  try {
-      const document = new Document(title,content);
-      console.log(document);
-      return await document.save();
-  } catch (error) {
-      console.error("Error in createDocumentService:", error);
-      const customError = new Error();
-      customError.code = "DOCUMENT_CREATION_FAILED";
-      throw customError;
-  };
-};
+
 
 module.exports = {
   signUpService,
   signInService,
-  getAllDocumentsService,
-  createDocumentService
+  
 };

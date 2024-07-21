@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/user/sign-up", signUp);
 router.post("/user/sign-in", signIn);
 
-router.post("/user/add",authenticateToken, addDocumentController)
+router.post("/user/add-document",authenticateToken, addDocumentController)
 
 
 module.exports = router;

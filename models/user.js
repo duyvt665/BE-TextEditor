@@ -25,25 +25,6 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-const documentSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  content: {
-    type: String,
-    required: true
-  },
-  userIds: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User',
-    default: []
-  }
-},
-
-
-);
-module.exports = mongoose.model('Document', documentSchema);
 
 const User = mongoose.model("User", userSchema);
 
