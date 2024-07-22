@@ -39,8 +39,41 @@ const createDocumentService = async (title, content, userId) => {
     }
   };
   
-
+  const getDocumentsByUserIdService = async (userId) => {
+    try {
+        // Truy vấn tài liệu chứa userId trong mảng userIds
+        const documents = await Document.find({ userIds: userId });
+    
+        if (!documents) {
+          throw new Error('No documents found for this user');
+        }
+    
+        return documents;
+      } catch (error) {
+        console.error("Error in getDocumentsByUserId:", error);
+        throw error;
+      }
+  };
+  
+  const deleteDocumentByUDIDService = async (userId, documentId) => {
+    try {
+      const document = await Document.findOne({ _id: documentId, userIds: userId });
+  
+      if (!document) {
+        throw new Error('Document not found for this user');
+      }
+  
+      await Document.findByIdAndDelete(documentId);
+  
+      return { message: 'Document deleted successfully' };
+    } catch (error) {
+      console.error("Error in deleteDocumentByUDIDService:", error);
+      throw error;
+    }
+  };
 
 module.exports = {
-    createDocumentService
+    createDocumentService,
+    getDocumentsByUserIdService,
+    deleteDocumentByUDIDService
 }
