@@ -55,19 +55,19 @@ const createDocumentService = async (title, content, userId) => {
       }
   };
   
-  const deleteDocumentByUDIDService = async (userId, documentId) => {
+  const deleteDocumentByTitleService = async (title) => {
     try {
-      const document = await Document.findOne({ _id: documentId, userIds: userId });
+      const document = await Document.findOne({ title: title });
   
       if (!document) {
-        throw new Error('Document not found for this user');
+        throw new Error('Document not found');
       }
   
-      await Document.findByIdAndDelete(documentId);
+      await Document.findByIdAndDelete(document._id);
   
       return { message: 'Document deleted successfully' };
     } catch (error) {
-      console.error("Error in deleteDocumentByUDIDService:", error);
+      console.error("Error in deleteDocumentByTitleService:", error);
       throw error;
     }
   };
@@ -75,5 +75,5 @@ const createDocumentService = async (title, content, userId) => {
 module.exports = {
     createDocumentService,
     getDocumentsByUserIdService,
-    deleteDocumentByUDIDService
+    deleteDocumentByTitleService
 }

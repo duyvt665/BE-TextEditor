@@ -20,8 +20,8 @@ router.post("/user/sign-up", signUp);
 router.post("/user/sign-in", signIn);
 //////document
 router.post("/user/add-document",authenticateToken, addDocumentController)
-router.get('/user/documents/:userId',authenticateToken, getDocumentsController);
-router.delete('/user/documents/:userId/:documentId',authenticateToken,deleteDocumentController)
+router.get("/user/documents/:userId",authenticateToken, getDocumentsController);
+router.delete("/user/documents/:title", deleteDocumentController);
 
 
 

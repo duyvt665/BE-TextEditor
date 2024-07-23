@@ -24,21 +24,23 @@ const getDocumentsController = async (req, res) => {
   
     try {
       const documents = await documentService.getDocumentsByUserIdService(userId);
-      res.status(200).json(documents);
+      return sendSuccessResponse(res, documents);
     } catch (error) {
-      console.error("Error in getDocumentsController:", error);
-      res.status(500).json({ message: error.message });
+      console.log(error);
+      const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+      return sendErrorResponse(res, errorCode);
     }
   };
   const deleteDocumentController = async (req, res) => {
-    const { userId, documentId } = req.params;
+    const { title } = req.params;
   
     try {
-      const result = await  documentService.deleteDocumentByUDIDService(userId, documentId);
-      res.status(200).json(result);
+      const result = await documentService.deleteDocumentByTitleService(title);
+      return sendSuccessResponse(res, result);
     } catch (error) {
-      console.error("Error in deleteDocumentController:", error);
-      res.status(500).json({ message: error.message });
+      console.log(error);
+      const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+      return sendErrorResponse(res, errorCode);
     }
   };
   
