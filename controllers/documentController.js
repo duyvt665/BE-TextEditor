@@ -20,8 +20,8 @@ const addDocumentController = async (req, res) => {
     }
 };
 const getDocumentsController = async (req, res) => {
-    const { userId } = req.params;
-  
+    const userId  = req.user._id;
+    
     try {
       const documents = await documentService.getDocumentsByUserIdService(userId);
       return sendSuccessResponse(res, documents);
