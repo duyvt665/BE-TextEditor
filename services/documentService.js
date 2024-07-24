@@ -62,6 +62,33 @@ const getDocumentsByUserIdService = async (userId) => {
   }
 };
 
+
+const updateDocumentTitleService = async (userId, documentId, newTitle) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      const customError = new Error('Invalid user ID');
+      customError.code = 'INVALID_USERID';
+      throw customError;
+    }
+    // Tìm và cập nhật tiêu đề của document
+    const updatedDocument = await Document.findOneAndUpdate(
+      { _id: documentId, userIds: userId }, // Tìm tài liệu dựa trên documentId và userId
+      { title: newTitle }, // Cập nhật tiêu đề
+      { new: true, runValidators: true } // Đảm bảo tài liệu được trả về sau khi cập nhật
+    );
+    if (!updatedDocument) {
+      throw new Error('Document not found or you do not have permission to update this document.');
+    }
+
+    return updatedDocument;
+  } catch (error) {
+    console.error("Error in updateDocumentTitleService:", error);
+    throw error;
+  }
+};
+
 const deleteDocumentByTitleService = async (title) => {
   try {
     const document = await Document.findOne({ title: title });
@@ -78,9 +105,65 @@ const deleteDocumentByTitleService = async (title) => {
     throw error;
   }
 };
+const getUserInfoService = async (userId) => {
+  try {
+    // Tìm kiếm người dùng theo userId
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      const customError = new Error('Invalid user ID');
+      customError.code = 'INVALID_USERID';
+      throw customError;
+    }
 
+    // Trả về thông tin người dùng
+    return {
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      googleId: user.googleId,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  } catch (error) {
+    console.error("Error in getUserInfoService:", error);
+    throw error;
+  }
+};
+const updateUserInfoService = async (userId, updateData) => {
+  try {
+    // Kiểm tra xem người dùng có tồn tại không
+    const user = await User.findById(userId);
+    if (!user) {
+      const customError = new Error('Invalid user ID');
+      customError.code = 'INVALID_USERID';
+      throw customError;
+    }
+
+    // Cập nhật thông tin người dùng
+    const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    return {
+      id: updatedUser._id,
+      email: updatedUser.email,
+      username: updatedUser.username,
+      googleId: updatedUser.googleId,
+      createdAt: updatedUser.createdAt,
+      updatedAt: updatedUser.updatedAt,
+    };
+  } catch (error) {
+    console.error("Error in updateUserInfoService:", error);
+    throw error;
+  }
+};
 module.exports = {
   createDocumentService,
   getDocumentsByUserIdService,
-  deleteDocumentByTitleService
+  deleteDocumentByTitleService,
+  updateDocumentTitleService,
+  getUserInfoService,
+  updateUserInfoService
 }

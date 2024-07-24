@@ -9,7 +9,10 @@ const {
    
   addDocumentController,
   getDocumentsController,
-  deleteDocumentController 
+  deleteDocumentController,
+  updateDocumentTitleController,
+  getUserInfoController,
+  updateUserInfoController
 } = require("../controllers/documentController");
 
 const authenticateToken = require("../middleware/authMiddleware");
@@ -22,7 +25,9 @@ router.post("/user/sign-in", signIn);
 router.post("/user/add-document",authenticateToken, addDocumentController)
 router.get("/user/get-documents",authenticateToken, getDocumentsController);
 router.delete("/user/documents/:title", deleteDocumentController);
-
+router.put("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
+router.get("/user/get-info",authenticateToken, getUserInfoController);
+router.put("/user/user-update",authenticateToken, updateUserInfoController);
 
 
 module.exports = router;
