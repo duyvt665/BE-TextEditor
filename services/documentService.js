@@ -42,7 +42,7 @@ const createDocumentService = async (title, content, userId) => {
 const getDocumentsByUserIdService = async (userId) => {
   try {
     // Truy vấn tài liệu chứa userId trong mảng userIds
-    
+
     const user = await User.findById(userId);
     if (!user) {
       const customError = new Error('Invalid user ID');
@@ -109,10 +109,18 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
 
 const deleteDocumentByTitleService = async (title) => {
   try {
-    const document = await Document.findOne({ title: title });
+    const user = await User.findById(userId);
+    if (!user) {
+      const customError = new Error('Invalid user ID');
+      customError.code = 'INVALID_USERID';
+      throw customError;
+    }
+    const document = await Document.findOne({ title: title, userIds: userId });
 
     if (!document) {
-      throw new Error('Document not found');
+      const customError = new Error('No documents found for this user');
+      customError.code = 'DOCUMENT_NOT_FOUND';
+      throw customError;
     }
 
     await Document.findByIdAndDelete(document._id);

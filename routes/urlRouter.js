@@ -1,9 +1,8 @@
 const express = require("express");
 const {
   signUp,
-  signIn,
-  getUserInfoController,
-  updateUserInfoController
+  signIn
+  
 
 } = require("../controllers/authControllers");
 
@@ -12,10 +11,13 @@ const {
   addDocumentController,
   getDocumentsController,
   deleteDocumentController,
-  updateDocumentTitleController,
+  updateDocumentTitleController
  
 } = require("../controllers/documentController");
-
+const {
+  getUserInfoController,
+  updateUserInfoController
+}= require("../controllers/userController");
 const authenticateToken = require("../middleware/authMiddleware");
 const router = express.Router();
 
@@ -27,7 +29,7 @@ router.put("/user/update-user",authenticateToken, updateUserInfoController);
 //////document
 router.post("/user/add-document",authenticateToken, addDocumentController)
 router.get("/user/get-documents",authenticateToken, getDocumentsController);
-router.delete("/user/documents/:title", deleteDocumentController);
+router.delete("/user/documents/:title",authenticateToken, deleteDocumentController);
 router.put("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
 
 
