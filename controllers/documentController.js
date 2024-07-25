@@ -1,11 +1,8 @@
-// controllers/documentController.js
 const documentService = require('../services/documentService');
-// const {createDocumentService} = require('../services/documentService');
 
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/apiRespondUtil");
 
-
-
+//Add Document
 const addDocumentController = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -19,6 +16,8 @@ const addDocumentController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
+
+//Get Document
 const getDocumentsController = async (req, res) => {
   const userId = req.user._id;
 
@@ -43,13 +42,11 @@ const deleteDocumentController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
+// Update Document
 
 const updateDocumentTitleController = async (req, res) => {
   const { documentId, newTitle } = req.body;
   const userId = req.user._id;
-
-
-
   try {
     const result = await documentService.updateDocumentTitleService(userId, documentId, newTitle);
     return sendSuccessResponse(res, result);
@@ -59,7 +56,6 @@ const updateDocumentTitleController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
-
 
 module.exports = {
   addDocumentController,

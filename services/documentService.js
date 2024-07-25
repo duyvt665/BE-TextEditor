@@ -4,10 +4,9 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 
-
+//Create Document
 const createDocumentService = async (title, content, userId) => {
   try {
-    // Kiểm tra xem userId có hợp lệ không
     const user = await User.findById(userId);
     if (!user) {
       const customError = new Error('Invalid user ID');
@@ -15,7 +14,6 @@ const createDocumentService = async (title, content, userId) => {
       throw customError;
     }
 
-    // Kiểm tra tiêu đề có bị trùng không
     let uniqueTitle = title;
     let suffix = 1;
     while (await Document.exists({ title: uniqueTitle, userIds: userId })) {
@@ -23,7 +21,6 @@ const createDocumentService = async (title, content, userId) => {
       suffix++;
     }
 
-    // Tạo tài liệu với tiêu đề duy nhất
     const document = new Document({
       title: uniqueTitle,
       content,
@@ -39,9 +36,9 @@ const createDocumentService = async (title, content, userId) => {
   }
 };
 
+//Get Document By UserId     
 const getDocumentsByUserIdService = async (userId) => {
   try {
-    // Truy vấn tài liệu chứa userId trong mảng userIds
 
     const user = await User.findById(userId);
     if (!user) {
@@ -56,7 +53,7 @@ const getDocumentsByUserIdService = async (userId) => {
       customError.code = 'DOCUMENT_NOT_FOUND';
       throw customError;
 
-    }
+    } 
 
     return documents;
   } catch (error) {
@@ -65,10 +62,9 @@ const getDocumentsByUserIdService = async (userId) => {
   }
 };
 
-
+// Update Document 
 const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   try {
-    // Kiểm tra xem người dùng có tồn tại không
     const user = await User.findById(userId);
     if (!user) {
       const customError = new Error('Invalid user ID');
@@ -76,7 +72,6 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
       throw customError;
     }
 
-    // Kiểm tra xem tiêu đề mới có bị trùng lặp không
     const existingDocument = await Document.findOne({ title: newTitle });
     if (existingDocument && existingDocument._id.toString() == documentId.toString()) {
       const customError = new Error('Title already exists');
@@ -84,10 +79,9 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
       throw customError;
     }
 
-    // Tìm và cập nhật tiêu đề của document
     const updatedDocument = await Document.findOneAndUpdate(
-      { _id: documentId, userIds: userId }, // Tìm tài liệu dựa trên documentId và userId
-      { title: newTitle }, // Cập nhật tiêu đề
+      { _id: documentId, userIds: userId }, 
+      { title: newTitle }, 
 
     );
 
@@ -106,7 +100,7 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   }
 };
 
-
+// Delete Document
 const deleteDocumentByTitleService = async (title) => {
   try {
     const user = await User.findById(userId);

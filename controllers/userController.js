@@ -1,5 +1,8 @@
 const userService = require("../services/userService");
+
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/apiRespondUtil");
+
+// Get Info User
 const getUserInfoController = async (req, res) => {
     const userId = req.user._id;
 
@@ -12,6 +15,8 @@ const getUserInfoController = async (req, res) => {
         return sendErrorResponse(res, errorCode);
     }
 };
+
+//Update Info User
 const updateUserInfoController = async (req, res) => {
     const userId = req.user._id;
     const { email, username } = req.body;
