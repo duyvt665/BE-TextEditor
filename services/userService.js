@@ -12,9 +12,15 @@ const updateUserInfoService = async (userId, email, username) => {
             customError.code = 'INVALID_USERID';
             throw customError;
         }
+        if(!email || !username){
+            const customError = new Error();
+            customError.code = 'INVALID_INPUT';
+            throw customError;
+        }
         if (email) {
             const existingEmailUser = await User.findOne({ email });
-            if (existingEmailUser && existingEmailUser._id.toString() == userId.toString()) {
+            console.log(existingEmailUser)
+            if (existingEmailUser && existingEmailUser._id.toString() !== userId.toString()) {
                 const customError = new Error('Email already exists');
                 customError.code = 'EMAIL_EXISTS';
                 throw customError;
@@ -23,7 +29,7 @@ const updateUserInfoService = async (userId, email, username) => {
 
         if (username) {
             const existingUsernameUser = await User.findOne({ username });
-            if (existingUsernameUser && existingUsernameUser._id.toString() == userId.toString()) {
+            if (existingUsernameUser && existingUsernameUser._id.toString() !== userId.toString()) {
                 const customError = new Error('Username already exists');
                 customError.code = 'USERNAME_EXISTS';
                 throw customError;
@@ -33,16 +39,7 @@ const updateUserInfoService = async (userId, email, username) => {
         if (email) user.email = email;
         if (username) user.username = username;
 
-        const updatedUser = await user.save();
-
-        return {
-            email: updatedUser.email,
-            username: updatedUser.username,
-            password: updatedUser.password,
-            googleId: updatedUser.googleId,
-            createdAt: updatedUser.createdAt,
-            updatedAt: updatedUser.updatedAt,
-        };
+        await user.save();
     } catch (error) {
         console.error("Error in updateUserInfoService:", error);
         throw error;
@@ -60,14 +57,7 @@ const getUserInfoService = async (userId) => {
             throw customError;
         }
 
-        return {
-            id: user._id,
-            email: user.email,
-            username: user.username,
-            googleId: user.googleId,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        };
+        return user;
     } catch (error) {
         console.error("Error in getUserInfoService:", error);
         throw error;

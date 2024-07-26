@@ -30,11 +30,13 @@ const getDocumentsController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
+
+//Delete Document
 const deleteDocumentController = async (req, res) => {
-  const { title } = req.params;
+  const { documentId } = req.params;
   const userId = req.user._id;
   try {
-    const result = await documentService.deleteDocumentByTitleService(title, userId);
+    const result = await documentService.deleteDocumentByTitleService(documentId, userId);
     return sendSuccessResponse(res, result);
   } catch (error) {
     console.log(error);
@@ -42,8 +44,8 @@ const deleteDocumentController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
-// Update Document
 
+// Update Document
 const updateDocumentTitleController = async (req, res) => {
   const { documentId, newTitle } = req.body;
   const userId = req.user._id;
@@ -57,12 +59,11 @@ const updateDocumentTitleController = async (req, res) => {
   }
 };
 
+
 module.exports = {
   addDocumentController,
   getDocumentsController,
   deleteDocumentController,
   updateDocumentTitleController
-
-
 }
 

@@ -2,17 +2,13 @@ const express = require("express");
 const {
   signUp,
   signIn
-  
-
-} = require("../controllers/authControllers");
+  } = require("../controllers/authControllers");
 
 const {
-   
   addDocumentController,
   getDocumentsController,
   deleteDocumentController,
   updateDocumentTitleController
- 
 } = require("../controllers/documentController");
 const {
   getUserInfoController,
@@ -24,6 +20,7 @@ const router = express.Router();
 //Authorization
 router.post("/user/sign-up", signUp);
 router.post("/user/sign-in", signIn);
+//User
 router.get("/user/get-info",authenticateToken, getUserInfoController);
 router.put("/user/update-user",authenticateToken, updateUserInfoController);
 //////document

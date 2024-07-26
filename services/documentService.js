@@ -13,20 +13,17 @@ const createDocumentService = async (title, content, userId) => {
       customError.code = 'INVALID_USERID';
       throw customError;
     }
-
     let uniqueTitle = title;
     let suffix = 1;
     while (await Document.exists({ title: uniqueTitle, userIds: userId })) {
       uniqueTitle = `${title} (${suffix})`;
       suffix++;
     }
-
     const document = new Document({
       title: uniqueTitle,
       content,
       userIds: [userId]
     });
-
     return await document.save();
   } catch (error) {
     console.error('Error in createDocumentService:', error);
@@ -39,21 +36,23 @@ const createDocumentService = async (title, content, userId) => {
 //Get Document By UserId     
 const getDocumentsByUserIdService = async (userId) => {
   try {
-
     const user = await User.findById(userId);
     if (!user) {
       const customError = new Error('Invalid user ID');
       customError.code = 'INVALID_USERID';
       throw customError;
     }
-    const documents = await Document.find({ userIds: userId });
 
+    const documents = await Document.find({ userIds: userId });
     if (!documents) {
       const customError = new Error('No documents found for this user');
       customError.code = 'DOCUMENT_NOT_FOUND';
       throw customError;
-
     } 
+    if(documents && documents.length <= 0){
+        const documentsEmpty = {}
+      return {documentsEmpty};
+    }
 
     return documents;
   } catch (error) {
@@ -66,7 +65,7 @@ const getDocumentsByUserIdService = async (userId) => {
 const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   try {
     const user = await User.findById(userId);
-    if (!user) {
+    if (!documentId) {
       const customError = new Error('Invalid user ID');
       customError.code = 'INVALID_USERID';
       throw customError;
@@ -82,7 +81,6 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
     const updatedDocument = await Document.findOneAndUpdate(
       { _id: documentId, userIds: userId }, 
       { title: newTitle }, 
-
     );
 
     if (!updatedDocument) {
@@ -101,16 +99,17 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
 };
 
 // Delete Document
-const deleteDocumentByTitleService = async (title) => {
+const deleteDocumentByTitleService = async (documentId, userId) => {
   try {
     const user = await User.findById(userId);
+
     if (!user) {
       const customError = new Error('Invalid user ID');
       customError.code = 'INVALID_USERID';
       throw customError;
     }
-    const document = await Document.findOne({ title: title, userIds: userId });
 
+    const document = await Document.findOne({ documentId: documentId, userIds: userId });
     if (!document) {
       const customError = new Error('No documents found for this user');
       customError.code = 'DOCUMENT_NOT_FOUND';

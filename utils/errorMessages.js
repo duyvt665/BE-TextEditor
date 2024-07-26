@@ -49,6 +49,11 @@ const errors = {
         code: "INVALID_USERID",
         message: "Invalid user ID provided. Please check and try again."
     },
+    INVALID_INPUT: {
+        status: StatusCodes.BAD_REQUEST,
+        code: "INVALID_INPUT",
+        message: "Invalid input user provided. Please check and try again."
+    },
     DOCUMENT_CREATION_FAILED: {
         status: StatusCodes.BAD_REQUEST,
         code: "DOCUMENT_CREATION_FAILED",
