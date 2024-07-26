@@ -44,7 +44,6 @@ const deleteDocumentController = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
-
 // Update Document
 const updateDocumentTitleController = async (req, res) => {
   const { documentId, newTitle } = req.body;

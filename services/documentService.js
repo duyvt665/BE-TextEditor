@@ -65,7 +65,7 @@ const getDocumentsByUserIdService = async (userId) => {
 const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   try {
     const user = await User.findById(userId);
-    if (!documentId) {
+    if (!user) {
       const customError = new Error('Invalid user ID');
       customError.code = 'INVALID_USERID';
       throw customError;
@@ -109,7 +109,7 @@ const deleteDocumentByTitleService = async (documentId, userId) => {
       throw customError;
     }
 
-    const document = await Document.findOne({ documentId: documentId, userIds: userId });
+    const document = await Document.findOne ({ documentId: documentId, userIds: userId });
     if (!document) {
       const customError = new Error('No documents found for this user');
       customError.code = 'DOCUMENT_NOT_FOUND';
@@ -124,7 +124,6 @@ const deleteDocumentByTitleService = async (documentId, userId) => {
     throw error;
   }
 };
-
 
 module.exports = {
   createDocumentService,

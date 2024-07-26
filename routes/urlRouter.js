@@ -21,7 +21,7 @@ router.post("/user/sign-in", signIn);
 //////document
 router.post("/user/add-document",authenticateToken, addDocumentController)
 router.get("/user/get-documents",authenticateToken, getDocumentsController);
-router.delete("/user/documents/:title",authenticateToken, deleteDocumentController);
+router.delete("/user/documents/:documentId",authenticateToken, deleteDocumentController);
 router.put("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
 
 
