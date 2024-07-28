@@ -1,6 +1,6 @@
 require("dotenv").config();
 const authService = require("../services/authService");
-const {sendErrorResponse, sendSuccessResponse} = require("../utils/apiRespondUtil");
+const { sendErrorResponse, sendSuccessResponse } = require("../utils/apiRespondUtil");
 
 
 //SIGN UP
@@ -38,9 +38,11 @@ const signIn = async (req, res) => {
 };
 
 
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+
 
 
 };

@@ -2,12 +2,13 @@ const express = require("express");
 const {
   signUp,
   signIn
-
-} = require("../controllers/authControllers");
+  } = require("../controllers/authControllers");
 
 const {
-   
-  addDocumentController
+  addDocumentController,
+  getDocumentsController,
+  deleteDocumentController,
+  updateDocumentTitleController
 } = require("../controllers/documentController");
 
 const authenticateToken = require("../middleware/authMiddleware");
@@ -17,7 +18,12 @@ const router = express.Router();
 router.post("/user/sign-up", signUp);
 router.post("/user/sign-in", signIn);
 
+//////document
 router.post("/user/add-document",authenticateToken, addDocumentController)
+router.get("/user/get-documents",authenticateToken, getDocumentsController);
+router.delete("/user/documents/:documentId",authenticateToken, deleteDocumentController);
+router.put("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
+
 
 
 module.exports = router;
