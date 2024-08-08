@@ -6,8 +6,6 @@ const errors = {
         code: "RESOURCE_NOT_FOUND",
         message: "The requested resource was not found."
     },
-
-
     EMAIL_NOT_FOUND: {
         status: StatusCodes.NOT_FOUND,
         code: "EMAIL_NOT_FOUND",

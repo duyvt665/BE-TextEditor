@@ -1,7 +1,9 @@
 require("dotenv").config();
 const authService = require("../services/authService");
-const { sendErrorResponse, sendSuccessResponse } = require("../utils/apiRespondUtil");
-
+const {
+  sendErrorResponse,
+  sendSuccessResponse,
+} = require("../utils/apiRespondUtil");
 
 //SIGN UP
 const signUp = async (req, res) => {
@@ -29,7 +31,11 @@ const signIn = async (req, res) => {
       username,
       password,
     });
-    return sendSuccessResponse(res, { message: "Login successful", token, user });
+    return sendSuccessResponse(res, {
+      message: "Login successful",
+      token,
+      user,
+    });
   } catch (error) {
     console.log(error);
     const errorCode = error.code || "INTERNAL_SERVER_ERROR";
@@ -37,12 +43,7 @@ const signIn = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   signUp,
   signIn,
-
-
-
 };

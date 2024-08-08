@@ -8,7 +8,10 @@ const {
   addDocumentController,
   getDocumentsController,
   deleteDocumentController,
-  updateDocumentTitleController
+  updateDocumentTitleController,
+  getInforDocumentById,
+  updateDocument,
+  shareDocument
 } = require("../controllers/documentController");
 const {
   getUserInfoController,
@@ -26,8 +29,11 @@ router.post("/user/sign-in", signIn);
 //////document
 router.post("/user/add-document",authenticateToken, addDocumentController)
 router.get("/user/get-documents",authenticateToken, getDocumentsController);
+router.get("/user/infor-document/:documentId", authenticateToken, getInforDocumentById)
 router.delete("/user/documents/:documentId",authenticateToken, deleteDocumentController);
-router.put("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
+router.post("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
+router.post("/user/documents-update", authenticateToken, updateDocument)
+router.post("/user/documents-share", authenticateToken, shareDocument);
 //user
 router.get("/user/get-info",authenticateToken, getUserInfoController);
 router.put("/user/update-user",authenticateToken, updateUserInfoController);

@@ -11,7 +11,7 @@ const signUpService = async ({
   confirmPassword,
 }) => {
   const existingUser = await User.findOne({ email });
-  const existingUserName = await User.findOne({ username })
+  const existingUserName = await User.findOne({ username });
   if (existingUser) {
     const error = new Error();
     error.code = "EMAIL_EXISTS";
@@ -69,10 +69,7 @@ const signInService = async ({ username, password }) => {
   return { token, user };
 };
 
-
 module.exports = {
   signUpService,
-  signInService
-
-
+  signInService,
 };
