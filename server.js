@@ -4,12 +4,42 @@ const path = require("path");
 const urlRoute = require("./routes/urlRouter");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const WebSocket = require("ws");
 const http = require("http");
+const { Server } = require("socket.io");
+const Document = require("./models/document");
+
 require("dotenv").config();
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const io = new Server(server, {
+  cors: {
+    origin: "*", 
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("join-document", (documentId) => {
+    socket.join(documentId);
+    console.log(`User joined document: ${documentId}`);
+  });
+
+  socket.on("document-update", async ({ documentId, content }) => {
+    
+    try {
+      await Document.findByIdAndUpdate(documentId, { content: content });
+      io.to(documentId).emit("document-update", content);
+    } catch (error) {
+      console.error("Error updating document:", error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
 
 app.use(cors());
 app.use(express.json());
@@ -28,24 +58,3 @@ mongoose
     console.log("Connection failed!");
   });
 
-// WebSocket setup
-const clients = new Set();
-
-wss.on("connection", (ws) => {
-  clients.add(ws);
-  console.log("A new client connected");
-
-  ws.on("message", (message) => {
-    console.log("Received:", message);
-    clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
-    });
-  });
-
-  ws.on("close", () => {
-    clients.delete(ws);
-    console.log("Client disconnected");
-  });
-});
