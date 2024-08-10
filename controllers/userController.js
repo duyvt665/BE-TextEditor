@@ -11,7 +11,7 @@ const getUserInfoController = async (req, res) => {
 
   try {
     const userInfo = await userService.getUserInfoService(userId);
-    return sendSuccessResponse(res, {userInfo});
+    return sendSuccessResponse(res, { userInfo });
   } catch (error) {
     console.log(error);
     const errorCode = error.code || "INTERNAL_SERVER_ERROR";
@@ -33,7 +33,28 @@ const updateUserInfoController = async (req, res) => {
   }
 };
 
+//Change Password
+const changePassword = async (req, res) => {
+  try {
+    const { password, newPassword } = req.body;
+    const currentUserID = req.user._id;
+    await userService.changePasswordService(
+      currentUserID,
+      password,
+      newPassword
+    );
+    return sendSuccessResponse(res, {
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+    return sendErrorResponse(res, errorCode);
+  }
+};
+
 module.exports = {
   getUserInfoController,
   updateUserInfoController,
+  changePassword
 };

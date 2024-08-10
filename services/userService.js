@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 //Update User Info
@@ -18,7 +19,6 @@ const updateUserInfoService = async (userId, email, username) => {
     }
     if (email) {
       const existingEmailUser = await User.findOne({ email });
-      console.log(existingEmailUser);
       if (
         existingEmailUser &&
         existingEmailUser._id.toString() !== userId.toString()
@@ -56,7 +56,7 @@ const getUserInfoService = async (userId) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      const customError = new Error("Invalid user ID");
+      const customError = new Error("");
       customError.code = "INVALID_USERID";
       throw customError;
     }
@@ -67,7 +67,27 @@ const getUserInfoService = async (userId) => {
     throw error;
   }
 };
+
+const changePasswordService = async (currentUserID, password, newPassword) => {
+  const user = await User.findById(currentUserID);
+  if (!user) {
+    const error = new Error();
+    error.code = "INVALID_USERID"
+    throw error;
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    const error = new Error();
+    error.code = "INCORRECT_PASSWORD"
+    throw error;
+  }
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+  user.password = hashedPassword;
+  await user.save();
+};
+
 module.exports = {
   getUserInfoService,
   updateUserInfoService,
+  changePasswordService
 };
