@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
-//Update User Info
+//UPDATE INFOR USER SERVICE
 const updateUserInfoService = async (userId, email, username) => {
   try {
     const user = await User.findById(userId);
@@ -51,7 +51,7 @@ const updateUserInfoService = async (userId, email, username) => {
   }
 };
 
-//Get User Info
+// GET INFOR USER SERVICE
 const getUserInfoService = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -68,17 +68,18 @@ const getUserInfoService = async (userId) => {
   }
 };
 
+//CHANGE PASSWORD SERVICE
 const changePasswordService = async (currentUserID, password, newPassword) => {
   const user = await User.findById(currentUserID);
   if (!user) {
     const error = new Error();
-    error.code = "INVALID_USERID"
+    error.code = "INVALID_USERID";
     throw error;
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     const error = new Error();
-    error.code = "INCORRECT_PASSWORD"
+    error.code = "INCORRECT_PASSWORD";
     throw error;
   }
   const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -89,5 +90,5 @@ const changePasswordService = async (currentUserID, password, newPassword) => {
 module.exports = {
   getUserInfoService,
   updateUserInfoService,
-  changePasswordService
+  changePasswordService,
 };

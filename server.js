@@ -13,9 +13,9 @@ require("dotenv").config();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", 
-    methods: ["GET", "POST"]
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
 io.on("connection", (socket) => {
@@ -27,7 +27,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("document-update", async ({ documentId, content }) => {
-    
     try {
       await Document.findByIdAndUpdate(documentId, { content: content });
       io.to(documentId).emit("document-update", content);
@@ -57,4 +56,3 @@ mongoose
   .catch(() => {
     console.log("Connection failed!");
   });
-

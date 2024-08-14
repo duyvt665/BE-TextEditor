@@ -3,7 +3,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-//Create Document
+// ADD DOCUMENT SERVICE
 const createDocumentService = async (title, content, userId) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -31,7 +31,7 @@ const createDocumentService = async (title, content, userId) => {
   return await document.save();
 };
 
-//Get Document By UserId
+// GET ALL DOCUMENTS BY USER SERVICE
 const getDocumentsByUserIdService = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -59,6 +59,7 @@ const getDocumentsByUserIdService = async (userId) => {
   }
 };
 
+// GET INFOR DOCUMENT BY ID DOCUMENT SERVICE
 const getDocumentByIdService = async (documentId, userId) => {
   const user = await User.findById(userId);
   if (!user) {
@@ -76,7 +77,7 @@ const getDocumentByIdService = async (documentId, userId) => {
   return document;
 };
 
-// Update Document
+// UPDATE TITLE DOCUMENT SERVICE
 const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   const user = await User.findById(userId);
   const document = await Document.findById(documentId);
@@ -109,6 +110,7 @@ const updateDocumentTitleService = async (userId, documentId, newTitle) => {
   return { message: "Document Title Updated Successfully" };
 };
 
+// EDIT DOCUMENT SERVICE
 const updateDocumentService = async (
   userId,
   documentId,
@@ -168,7 +170,7 @@ const updateDocumentService = async (
   }
 };
 
-// Delete Document
+// DELETE DOCUMENT SERVICE
 const deleteDocumentByTitleService = async (documentId, userId) => {
   try {
     const user = await User.findById(userId);
@@ -204,6 +206,7 @@ const deleteDocumentByTitleService = async (documentId, userId) => {
   }
 };
 
+// SHARE DOCUMENT SERVICE
 const shareDocumentService = async (email, documentId, userId) => {
   const user = await User.findById(userId);
   if (!user) {

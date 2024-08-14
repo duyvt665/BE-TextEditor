@@ -1,16 +1,14 @@
 const documentService = require("../services/documentService");
-
 const {
   sendErrorResponse,
   sendSuccessResponse,
 } = require("../utils/apiRespondUtil");
 
-//Add Document
+// ADD DOCUMENT
 const addDocumentController = async (req, res) => {
+  const { title, content } = req.body;
+  const userId = req.user._id;
   try {
-    const { title, content } = req.body;
-    const userId = req.user._id;
-
     const newDocument = await documentService.createDocumentService(
       title,
       content,
@@ -24,10 +22,9 @@ const addDocumentController = async (req, res) => {
   }
 };
 
-//Get All Document By User
+// GET ALL DOCUMENTS BY USER
 const getDocumentsController = async (req, res) => {
   const userId = req.user._id;
-
   try {
     const documents = await documentService.getDocumentsByUserIdService(userId);
     return sendSuccessResponse(res, documents);
@@ -38,7 +35,7 @@ const getDocumentsController = async (req, res) => {
   }
 };
 
-//Get Infor Document By Id
+// GET INFOR DOCUMENT BY ID DOCUMENT
 const getInforDocumentById = async (req, res) => {
   const { documentId } = req.params;
   const userId = req.user._id;
@@ -55,7 +52,7 @@ const getInforDocumentById = async (req, res) => {
   }
 };
 
-//Delete Document
+// DELETE DOCUMENT
 const deleteDocumentController = async (req, res) => {
   const { documentId } = req.params;
   const userId = req.user._id;
@@ -72,7 +69,7 @@ const deleteDocumentController = async (req, res) => {
   }
 };
 
-// Update Title Document
+// UPDATE TITLE DOCUMENT
 const updateDocumentTitleController = async (req, res) => {
   const { documentId, newTitle } = req.body;
   const userId = req.user._id;
@@ -90,11 +87,11 @@ const updateDocumentTitleController = async (req, res) => {
   }
 };
 
-// Update Title and Content Document
+// EDIT DOCUMENT
 const updateDocument = async (req, res) => {
+  const userId = req.user._id;
+  const { documentId, newTitle, newContent } = req.body;
   try {
-    const userId = req.user._id;
-    const { documentId, newTitle, newContent } = req.body;
     await documentService.updateDocumentService(
       userId,
       documentId,
@@ -111,18 +108,23 @@ const updateDocument = async (req, res) => {
   }
 };
 
+// SHARE DOCUMENT
 const shareDocument = async (req, res) => {
-  const {email, documentId} = req.body;
+  const { email, documentId } = req.body;
   const userId = req.user._id;
   try {
-    const updatedDocument = await documentService.shareDocumentService(email, documentId,userId)
+    const updatedDocument = await documentService.shareDocumentService(
+      email,
+      documentId,
+      userId
+    );
     return sendSuccessResponse(res, updatedDocument);
   } catch (error) {
     console.log(error);
     const errorCode = error.code || "INTERNAL_SERVER_ERROR";
     return sendErrorResponse(res, errorCode);
   }
-}
+};
 
 module.exports = {
   addDocumentController,
@@ -131,5 +133,5 @@ module.exports = {
   updateDocumentTitleController,
   getInforDocumentById,
   updateDocument,
-  shareDocument
+  shareDocument,
 };

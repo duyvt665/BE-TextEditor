@@ -1,14 +1,12 @@
 const userService = require("../services/userService");
-
 const {
   sendErrorResponse,
   sendSuccessResponse,
 } = require("../utils/apiRespondUtil");
 
-// Get Info User
+// GET INFOR USER
 const getUserInfoController = async (req, res) => {
   const userId = req.user._id;
-
   try {
     const userInfo = await userService.getUserInfoService(userId);
     return sendSuccessResponse(res, { userInfo });
@@ -19,7 +17,7 @@ const getUserInfoController = async (req, res) => {
   }
 };
 
-//Update Info User
+//UPDATE INFOR USER
 const updateUserInfoController = async (req, res) => {
   const userId = req.user._id;
   const { email, username } = req.body;
@@ -33,11 +31,11 @@ const updateUserInfoController = async (req, res) => {
   }
 };
 
-//Change Password
+//CHANGE PASSWORD
 const changePassword = async (req, res) => {
-  try {
     const { password, newPassword } = req.body;
     const currentUserID = req.user._id;
+  try {
     await userService.changePasswordService(
       currentUserID,
       password,
@@ -53,8 +51,10 @@ const changePassword = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   getUserInfoController,
   updateUserInfoController,
-  changePassword
+  changePassword,
 };

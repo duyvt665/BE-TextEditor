@@ -5,7 +5,7 @@ const {
   sendSuccessResponse,
 } = require("../utils/apiRespondUtil");
 
-//SIGN UP
+// SIGN UP
 const signUp = async (req, res) => {
   const { email, username, password, confirmPassword } = req.body;
   try {
@@ -23,7 +23,7 @@ const signUp = async (req, res) => {
   }
 };
 
-//SIGN IN
+// SIGN IN
 const signIn = async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -43,7 +43,21 @@ const signIn = async (req, res) => {
   }
 };
 
+// FORGOT PASSWORD
+const userForgotPassword = async (req, res) => {
+  const {email} = req.body;
+  try{
+    await authService.forgotPasswordService(email);
+    return sendSuccessResponse(res, {message: "Forgot Password Email Sent Successfully!"});
+  } catch(error){
+    console.log(error);
+    const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+    return sendErrorResponse(res, errorCode);
+  }
+}
+
 module.exports = {
   signUp,
   signIn,
+  userForgotPassword,
 };

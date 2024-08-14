@@ -1,7 +1,8 @@
 const express = require("express");
 const {
   signUp,
-  signIn
+  signIn,
+  userForgotPassword
   } = require("../controllers/authControllers");
 
 const {
@@ -26,6 +27,7 @@ const router = express.Router();
 //Authorization
 router.post("/user/sign-up", signUp);
 router.post("/user/sign-in", signIn);
+router.post("/user/forgot-password", userForgotPassword)
 
 //////Document
 router.post("/user/add-document",authenticateToken, addDocumentController)
