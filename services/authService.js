@@ -49,7 +49,7 @@ const signInService = async ({ username, password }) => {
   const user = await User.findOne({ username });
   if (!user) {
     const error = new Error();
-    error.code = "EMAIL_NOT_FOUND";
+    error.code = "USER_NOT_FOUND";
     throw error;
   }
 

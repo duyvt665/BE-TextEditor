@@ -11,6 +11,11 @@ const errors = {
     code: "EMAIL_NOT_FOUND",
     message: "Email not found!",
   },
+  USER_NOT_FOUND:{
+    status: StatusCodes.NOT_FOUND,
+    code: "USER_NOT_FOUND",
+    message: "User not found!",
+  },
   DOCUMENT_NOT_FOUND: {
     status: StatusCodes.NOT_FOUND,
     code: "DOCUMENT_NOT_FOUND",
@@ -31,7 +36,6 @@ const errors = {
     code: "TITLE_ALREADY_EXISTS",
     message: "Title document already exists!",
   },
-
   INCORRECT_PASSWORD: {
     status: StatusCodes.UNAUTHORIZED,
     code: "INCORRECT_PASSWORD",
