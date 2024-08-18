@@ -207,7 +207,7 @@ const deleteDocumentByTitleService = async (documentId, userId) => {
 };
 
 // SHARE DOCUMENT SERVICE
-const shareDocumentService = async (email, documentId, userId) => {
+const shareDocumentService = async (email, documentId,permission, userId) => {
   const user = await User.findById(userId);
   if (!user) {
     const customError = new Error();
@@ -236,10 +236,58 @@ const shareDocumentService = async (email, documentId, userId) => {
     throw customError;
   }
   document.userIds.push(newUserId);
+  document.permissions.set(newUserId.toString(), permission);
   await document.save();
 
   return { message: "Share document successfully" };
 };
+
+// GET USERS WHO OWN DOCUMENTS BY DOCUMENT ID SERVICE
+const getUserOwnDocumentService = async (documentId) =>{
+  const document = await Document.findById(documentId)
+  if(!document){
+    const customError = new Error();
+    customError.code = "DOCUMENT_NOT_FOUND";
+    throw customError;
+  }
+
+  const { owner, userIds, permissions } = document;
+  const usersWithPermissions = [];
+
+  for (const userId of userIds) {
+    const user = await User.findById(userId).exec();
+    if (user && user.email !== owner) {
+      const permission = permissions.get(userId.toString());
+      usersWithPermissions.push({
+        email: user.email,
+        permission,
+      });
+    }
+  }
+
+  return usersWithPermissions;
+}
+
+const updatePermissionService = async (documentId, email, permission) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    const customError = new Error();
+    customError.code = "INVALID_USERID";
+    throw customError;
+  }
+  const userId = user._id;
+  const document = await Document.findById(documentId);
+  if (!document) {
+    const customError = new Error();
+    customError.code = "DOCUMENT_NOT_FOUND";
+    throw customError;
+  }
+
+  document.permissions.set(userId.toString(), permission);
+  await document.save();
+  return { message: "Permission updated successfully" };
+}
+
 
 module.exports = {
   createDocumentService,
@@ -249,4 +297,6 @@ module.exports = {
   getDocumentByIdService,
   updateDocumentService,
   shareDocumentService,
+  getUserOwnDocumentService,
+  updatePermissionService
 };

@@ -4,7 +4,6 @@ const {
   signIn,
   userForgotPassword
   } = require("../controllers/authControllers");
-
 const {
   addDocumentController,
   getDocumentsController,
@@ -12,14 +11,16 @@ const {
   updateDocumentTitleController,
   getInforDocumentById,
   updateDocument,
-  shareDocument
+  shareDocument,
+  getUserOwnDocument,
+  updatePermission
 } = require("../controllers/documentController");
 const {
   getUserInfoController,
   updateUserInfoController,
   changePassword
 }= require("../controllers/userController");
-
+const {addFolder, getAllFolderForUser}  = require("../controllers/folderController");
 
 const authenticateToken = require("../middleware/authMiddleware");
 const router = express.Router();
@@ -37,11 +38,16 @@ router.delete("/user/documents/:documentId",authenticateToken, deleteDocumentCon
 router.post("/user/documents/update-title", authenticateToken, updateDocumentTitleController);
 router.post("/user/documents-update", authenticateToken, updateDocument)
 router.post("/user/documents-share", authenticateToken, shareDocument);
+router.post("/user/user-owners", authenticateToken, getUserOwnDocument)
+router.post("/user/update-permissions", authenticateToken, updatePermission)
 
 //User
 router.get("/user/get-info",authenticateToken, getUserInfoController);
 router.put("/user/update-user",authenticateToken, updateUserInfoController);
 router.post("/user/change-password", authenticateToken, changePassword)
 
+//Folder
+router.post("/add-folder", authenticateToken, addFolder);
+router.get("/folder/get-all", authenticateToken, getAllFolderForUser)
 
 module.exports = router;

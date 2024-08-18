@@ -19,6 +19,19 @@ const documentSchema = new mongoose.Schema(
       ref: "User",
       default: [],
     },
+    permissions: {
+      type: Map,
+      of: {
+        type: String,
+        enum: ["view", "edit"],
+      },
+      default: {},
+    },
+    folder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Folder",
+      default: null,
+    },
   },
   {
     timestamps: true,

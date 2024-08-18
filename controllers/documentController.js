@@ -110,12 +110,13 @@ const updateDocument = async (req, res) => {
 
 // SHARE DOCUMENT
 const shareDocument = async (req, res) => {
-  const { email, documentId } = req.body;
+  const { email, documentId, permission } = req.body;
   const userId = req.user._id;
   try {
     const updatedDocument = await documentService.shareDocumentService(
       email,
       documentId,
+      permission,
       userId
     );
     return sendSuccessResponse(res, updatedDocument);
@@ -125,6 +126,33 @@ const shareDocument = async (req, res) => {
     return sendErrorResponse(res, errorCode);
   }
 };
+ 
+// GET All USER OWN DOCUMENT
+const getUserOwnDocument = async (req, res) => {
+  const {documentId} = req.body
+  try {
+    const userOwnDocument = await documentService.getUserOwnDocumentService(documentId);
+    return sendSuccessResponse(res, userOwnDocument);
+  } catch (error) {
+    console.log(error);
+    const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+    return sendErrorResponse(res, errorCode);
+  }
+}
+
+const updatePermission = async (req, res) =>{
+  const {documentId, email, permission } = req.body
+  try {
+    const updatedDocument = await documentService.updatePermissionService(documentId, email, permission);
+    return sendSuccessResponse(res, updatedDocument);
+  } catch (error) {
+    console.log(error);
+    const errorCode = error.code || "INTERNAL_SERVER_ERROR";
+    return sendErrorResponse(res, errorCode);
+  }    
+}
+
+
 
 module.exports = {
   addDocumentController,
@@ -134,4 +162,6 @@ module.exports = {
   getInforDocumentById,
   updateDocument,
   shareDocument,
+  getUserOwnDocument,
+  updatePermission
 };
