@@ -74,6 +74,16 @@ const errors = {
     message:
       "Exceeded the number of password reset requests per day. Try again tomorrow.",
   },
+  FOLDER_NOT_FOUND: {
+    status: StatusCodes.NOT_FOUND,
+    code: "FOLDER_NOT_FOUND",
+    message: "Folder not found!",
+  },
+  DOCUMENT_EXISTS_FOLDER:{
+    status: StatusCodes.CONFLICT,
+    code: "DOCUMENT_EXISTS_FOLDER",
+    message: "Document already exists in this folder or another folder",
+  },
   INTERNAL_SERVER_ERROR: {
     status: StatusCodes.INTERNAL_SERVER_ERROR,
     code: "INTERNAL_SERVER_ERROR",

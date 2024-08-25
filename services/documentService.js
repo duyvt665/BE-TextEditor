@@ -11,18 +11,24 @@ const createDocumentService = async (title, content, userId) => {
     customError.code = "INVALID_USERID";
     throw customError;
   }
-  const existingDocument = await Document.exists({
-    title: title,
+
+  const existingDocuments = await Document.find({
+    title: new RegExp(`^${title}( \\(\\d+\\))?$`), 
     userIds: userId,
   });
-  if (existingDocument) {
-    const customError = new Error();
-    customError.code = "TITLE_ALREADY_EXISTS";
-    throw customError;
+
+  let newTitle = title;
+  if (existingDocuments.length > 0) {
+    const highestCount = existingDocuments.reduce((max, doc) => {
+      const match = doc.title.match(/\((\d+)\)$/);
+      const count = match ? parseInt(match[1], 10) : 0;
+      return Math.max(max, count);
+    }, 0);
+    newTitle = `${title} (${highestCount + 1})`;
   }
 
   const document = new Document({
-    title: title,
+    title: newTitle,
     content,
     owner: user.email,
     userIds: [userId],
@@ -30,7 +36,6 @@ const createDocumentService = async (title, content, userId) => {
 
   return await document.save();
 };
-
 // GET ALL DOCUMENTS BY USER SERVICE
 const getDocumentsByUserIdService = async (userId) => {
   try {
