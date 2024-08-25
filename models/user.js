@@ -16,9 +16,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: function () { return !this.googleId; },
     },
-    googleId: {
-      type: String,
-      required: false,
+    resetPassword: {
+      count: {
+        type: Number,
+        default: 0,
+      },
+      lastRequest: {
+        type: Date,
+        default: null,
+      },
     },
   },
   {
