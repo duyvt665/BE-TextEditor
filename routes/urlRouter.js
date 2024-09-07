@@ -27,6 +27,7 @@ const {
   renameFolder,
   addDocumenttoFolder,
   getAllDocumentToFolder,
+  deleteDocumentFromFolder,
 } = require("../controllers/folderController");
 
 const authenticateToken = require("../middleware/authMiddleware");
@@ -72,4 +73,5 @@ router.delete("/folder/remove/:folderId", authenticateToken, deleteFolder);
 router.post("/folder/rename", authenticateToken, renameFolder);
 router.post("/folder/add-document", authenticateToken, addDocumenttoFolder);
 router.post("/folder/get-document", authenticateToken, getAllDocumentToFolder)
+router.post("/folder/remove-document", authenticateToken, deleteDocumentFromFolder)
 module.exports = router;

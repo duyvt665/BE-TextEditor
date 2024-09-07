@@ -99,7 +99,7 @@ const deleteFolderService = async (folderId, userId) => {
 };
 
 const getAllDocumentToFolderService = async (folderId, userId) => {
-  const user = await User.findOne({ _id: userId});
+  const user = await User.findOne({ _id: userId });
   const folder = await Folder.findOne({ _id: folderId, owner: user.email });
   if (!folder) {
     const customError = new Error();
@@ -119,11 +119,43 @@ const getAllDocumentToFolderService = async (folderId, userId) => {
   return documents;
 };
 
+const deleteDocumentFromFolderService = async (
+  documentId,
+  folderId,
+  userId
+) => {
+  const user = await User.findOne({ _id: userId });
+  const folder = await Folder.findOne({ _id: folderId, owner: user.email });
+  if (!folder) {
+    const customError = new Error();
+    customError.code = "FOLDER_NOT_FOUND";
+    throw customError;
+  }
+  const userFolder = await UserFolder.findOne({
+    user: userId,
+    folder: folderId,
+  });
+  if (!userFolder) {
+    const customError = new Error();
+    customError.code = "FOLDER_NOT_FOUND";
+    throw customError;
+  }
+  const documentIndex = userFolder.documents.indexOf(documentId);
+  if (documentIndex === -1) {
+    throw new Error("Document is not in this folder");
+  }
+
+  userFolder.documents.splice(documentIndex, 1);
+  await userFolder.save();
+  return { message: 'Document removed from folder successfully' };
+};
+
 module.exports = {
   addFolderService,
   getAllFolderForUserService,
   deleteFolderService,
   renameFolderService,
   addDocumenttoFolderService,
-  getAllDocumentToFolderService
+  getAllDocumentToFolderService,
+  deleteDocumentFromFolderService
 };

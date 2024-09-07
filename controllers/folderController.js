@@ -48,9 +48,10 @@ const addDocumenttoFolder = async (req, res) => {
 // };
 
 const deleteDocumentFromFolder = async (req, res) => {
-  const { documentId } = req.body;
+  const { documentId, folderId } = req.body;
+  const userId = req.user._id;
   try {
-    await folderService.deleteDocumentFromFolderService(documentId);
+    await folderService.deleteDocumentFromFolderService(documentId, folderId, userId);
     return sendSuccessResponse(res, {
       message: "Document deleted from folder successfully",
     });
